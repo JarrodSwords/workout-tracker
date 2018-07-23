@@ -1,12 +1,14 @@
-﻿using System;
+using System;
 
 namespace workout_tracker.domain
 {
     /// <summary>
     /// Entity base class.
     /// 
-    /// Original author: Khorikov, Vladimir; @vkhorikov
     /// Source: https://enterprisecraftsmanship.com/2014/11/08/domain-object-base-class/
+    /// Original author: Khorikov, Vladimir; @vkhorikov
+    /// 
+    /// Modified for use in this demo.
     /// </summary>
     public abstract class Entity
     {
