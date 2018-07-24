@@ -27,6 +27,7 @@ namespace workout_tracker.domain
             if (ReferenceEquals(this, compareTo))
                 return true;
 
+            // type equality
             if (GetType() != compareTo.GetType())
                 return false;
 
@@ -42,7 +43,7 @@ namespace workout_tracker.domain
             if (ReferenceEquals(a, null) && ReferenceEquals(b, null))
                 return true;
 
-            if (ReferenceEquals(a, null) || ReferenceEquals(b, null))
+            if (ReferenceEquals(a, null) || ReferenceEquals(b, null))            
                 return false;
 
             return a.Equals(b);
