@@ -5,6 +5,8 @@ VisualStudioVersion = 15.0.26124.0
 MinimumVisualStudioVersion = 15.0.26124.0
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "workout-tracker.domain", "workout-tracker.domain\workout-tracker.domain.csproj", "{71FFEBD7-D4E2-4E5A-9AF4-4F9C7D85D768}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "workout-tracker.tests", "workout-tracker.tests\workout-tracker.tests.csproj", "{B957E852-2928-408D-A469-F82F0194C9B5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -30,5 +32,17 @@ Global
 		{71FFEBD7-D4E2-4E5A-9AF4-4F9C7D85D768}.Release|x64.Build.0 = Release|Any CPU
 		{71FFEBD7-D4E2-4E5A-9AF4-4F9C7D85D768}.Release|x86.ActiveCfg = Release|Any CPU
 		{71FFEBD7-D4E2-4E5A-9AF4-4F9C7D85D768}.Release|x86.Build.0 = Release|Any CPU
+		{B957E852-2928-408D-A469-F82F0194C9B5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B957E852-2928-408D-A469-F82F0194C9B5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B957E852-2928-408D-A469-F82F0194C9B5}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{B957E852-2928-408D-A469-F82F0194C9B5}.Debug|x64.Build.0 = Debug|Any CPU
+		{B957E852-2928-408D-A469-F82F0194C9B5}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{B957E852-2928-408D-A469-F82F0194C9B5}.Debug|x86.Build.0 = Debug|Any CPU
+		{B957E852-2928-408D-A469-F82F0194C9B5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B957E852-2928-408D-A469-F82F0194C9B5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B957E852-2928-408D-A469-F82F0194C9B5}.Release|x64.ActiveCfg = Release|Any CPU
+		{B957E852-2928-408D-A469-F82F0194C9B5}.Release|x64.Build.0 = Release|Any CPU
+		{B957E852-2928-408D-A469-F82F0194C9B5}.Release|x86.ActiveCfg = Release|Any CPU
+		{B957E852-2928-408D-A469-F82F0194C9B5}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

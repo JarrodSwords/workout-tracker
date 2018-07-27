@@ -11,14 +11,12 @@ namespace workout_tracker.tests.unit
         private Entity CreateEntity()
         {
             var mock = new Mock<Entity> { CallBase = true };
-
             return mock.Object;
         }
 
-        private void SetId(ref Entity entity, long id) {
-            (entity.GetType())
-            .GetProperty("Id")
-            .SetValue(entity, id);
+        private void SetId(ref Entity entity, long id)
+        {
+            (entity.GetType()).GetProperty("Id").SetValue(entity, id);
         }
 
         public class Subclass : Entity {}
