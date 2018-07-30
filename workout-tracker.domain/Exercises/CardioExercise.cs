@@ -1,26 +1,26 @@
 using workout_tracker.domain;
 
-public class Cardio : ICardio
+public class CardioExercise : ICardioExercise
 {
     public Distance Distance { get; }
     public Speed Speed { get; }
     public Time Time { get; }
 
-    public Cardio(Distance distance, Speed speed)
+    public CardioExercise(Distance distance, Speed speed)
     {
         this.Distance = distance;
         this.Speed = speed;
         this.Time = CalculateTime(distance, speed);
     }
 
-    public Cardio(Speed speed, Time time)
+    public CardioExercise(Speed speed, Time time)
     {
         this.Distance = CalculateDistance(speed, time);
         this.Speed = speed;
         this.Time = time;
     }
 
-    public Cardio(Distance distance, Time time)
+    public CardioExercise(Distance distance, Time time)
     {
         this.Distance = distance;
         this.Speed = CalculateSpeed(distance, time);

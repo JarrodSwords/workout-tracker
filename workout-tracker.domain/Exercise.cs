@@ -2,17 +2,19 @@ namespace workout_tracker.domain
 {
     public class Exercise : Entity
     {
-        private readonly ICardio _cardio;
-        private readonly IResistance _resistance;
+        private readonly ExerciseType _exerciseType;
+
+        public ICardioExercise CardioExercise { get; set; }
+        public IResistanceExercise ResistanceExercise { get; set; }
 
         public string Name { get; set; }
         public Repetitions Repetitions { get; set; }
         public Sets Sets { get; set; }
 
-        public Exercise(ICardio locomotion, IResistance resistance)
+        public Exercise(ExerciseType exerciseType, string name)
         {
-            _cardio = locomotion;
-            _resistance = resistance;
+            _exerciseType = exerciseType;
+            Name = name;
         }
     }
 }

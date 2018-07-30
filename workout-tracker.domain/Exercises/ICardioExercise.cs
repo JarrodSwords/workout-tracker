@@ -1,6 +1,6 @@
 namespace workout_tracker.domain
 {
-    public interface ICardio
+    public interface ICardioExercise
     {
         Distance Distance { get; }
         Speed Speed { get; }

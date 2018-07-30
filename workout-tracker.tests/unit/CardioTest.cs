@@ -13,7 +13,7 @@ namespace workout_tracker.tests.unit
         [InlineData(7200, 2, 3600)]
         public void CalculateDistance_WithSpeedAndTime_ReturnsDistance(decimal meters, decimal metersPerSecond, decimal seconds)
         {
-            var distance = Cardio.CalculateDistance(new Speed(metersPerSecond), new Time(seconds));
+            var distance = CardioExercise.CalculateDistance(new Speed(metersPerSecond), new Time(seconds));
             
             distance.Meters.Should().Be(meters);
         }
@@ -23,7 +23,7 @@ namespace workout_tracker.tests.unit
         [InlineData(7200, 2, 3600)]
         public void CalculateSpeed_WithDistanceAndTime_ReturnsSpeed(decimal meters, decimal metersPerSecond, decimal seconds)
         {
-            var speed = Cardio.CalculateSpeed(new Distance(meters), new Time(seconds));
+            var speed = CardioExercise.CalculateSpeed(new Distance(meters), new Time(seconds));
             
             speed.MetersPerSecond.Should().Be(metersPerSecond);
         }
@@ -33,7 +33,7 @@ namespace workout_tracker.tests.unit
         [InlineData(7200, 2, 3600)]
         public void CalculateTime_WithDistanceAndSpeed_ReturnsTime(decimal meters, decimal metersPerSecond, decimal seconds)
         {
-            var time = Cardio.CalculateTime(new Distance(meters), new Speed(metersPerSecond));
+            var time = CardioExercise.CalculateTime(new Distance(meters), new Speed(metersPerSecond));
             
             time.Seconds.Should().Be(seconds);
         }
@@ -43,7 +43,7 @@ namespace workout_tracker.tests.unit
         [InlineData(60, -1)]
         public void DistanceSpeedConstructor_WithNegativeArgs_ThrowsArgumentOutOfRangeException(decimal meters, decimal metersPerSecond)
         {
-            Action createNewLocomotionEvent = () => new Cardio(new Distance(meters), new Speed(metersPerSecond));
+            Action createNewLocomotionEvent = () => new CardioExercise(new Distance(meters), new Speed(metersPerSecond));
 
             createNewLocomotionEvent.Should().Throw<ArgumentOutOfRangeException>();
         }
@@ -53,7 +53,7 @@ namespace workout_tracker.tests.unit
         [InlineData(1, -60)]
         public void SpeedTimeConstructor_WithNegativeArgs_ThrowsArgumentOutOfRangeException(decimal metersPerSecond, decimal seconds)
         {
-            Action createNewLocomotionEvent = () => new Cardio(new Speed(metersPerSecond), new Time(seconds));
+            Action createNewLocomotionEvent = () => new CardioExercise(new Speed(metersPerSecond), new Time(seconds));
 
             createNewLocomotionEvent.Should().Throw<ArgumentOutOfRangeException>();
         }
@@ -63,7 +63,7 @@ namespace workout_tracker.tests.unit
         [InlineData(60, -60)]
         public void DistanceTimeConstructor_WithNegativeArgs_ThrowsArgumentOutOfRangeException(decimal meters, decimal seconds)
         {
-            Action createNewLocomotionEvent = () => new Cardio(new Distance(meters), new Time(seconds));
+            Action createNewLocomotionEvent = () => new CardioExercise(new Distance(meters), new Time(seconds));
 
             createNewLocomotionEvent.Should().Throw<ArgumentOutOfRangeException>();
         }
