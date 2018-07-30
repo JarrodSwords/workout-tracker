@@ -1,5 +1,3 @@
-using workout_tracker.domain;
-
 namespace workout_tracker.domain
 {
     public class Exercise : Entity, ILocomotionEvent
@@ -7,6 +5,8 @@ namespace workout_tracker.domain
         private readonly ILocomotionEvent _locomotionEvent;
 
         public string Name { get; set; }
+        public Repetitions Repetitions { get; set; }
+        public Sets Sets { get; set; }
 
         public Distance Distance { get => _locomotionEvent.Distance; }
         public Speed Speed { get => _locomotionEvent.Speed; }

@@ -15,16 +15,16 @@ public class LocomotionEvent : ILocomotionEvent
 
     public LocomotionEvent(Speed speed, Time time)
     {
+        this.Distance = CalculateDistance(speed, time);
         this.Speed = speed;
         this.Time = time;
-        this.Distance = CalculateDistance(speed, time);
     }
 
     public LocomotionEvent(Distance distance, Time time)
     {
         this.Distance = distance;
-        this.Time = time;
         this.Speed = CalculateSpeed(distance, time);
+        this.Time = time;
     }
 
     public static Distance CalculateDistance(Speed speed, Time time)
