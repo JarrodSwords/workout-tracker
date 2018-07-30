@@ -1,20 +1,18 @@
 namespace workout_tracker.domain
 {
-    public class Exercise : Entity, ILocomotionEvent
+    public class Exercise : Entity
     {
-        private readonly ILocomotionEvent _locomotionEvent;
+        private readonly ICardio _cardio;
+        private readonly IResistance _resistance;
 
         public string Name { get; set; }
         public Repetitions Repetitions { get; set; }
         public Sets Sets { get; set; }
 
-        public Distance Distance { get => _locomotionEvent.Distance; }
-        public Speed Speed { get => _locomotionEvent.Speed; }
-        public Time Time { get => _locomotionEvent.Time; }
-
-        public Exercise(ILocomotionEvent locomotion)
+        public Exercise(ICardio locomotion, IResistance resistance)
         {
-            _locomotionEvent = locomotion;
+            _cardio = locomotion;
+            _resistance = resistance;
         }
     }
 }

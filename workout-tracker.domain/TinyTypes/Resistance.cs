@@ -2,16 +2,16 @@ using System;
 
 namespace workout_tracker.domain
 {
-    public class Sets : TinyType<decimal>
+    public class Resistance : TinyType<decimal>
     {
-        public Sets(decimal value) : base(value)
+        public Resistance(decimal value) : base(value)
         {
             Validate(value);
         }
 
-        private void Validate(decimal sets)
+        private void Validate(decimal resistance)
         {
-            if (sets < 0)
+            if (resistance < 0)
                 throw new ArgumentOutOfRangeException();
         }
     }

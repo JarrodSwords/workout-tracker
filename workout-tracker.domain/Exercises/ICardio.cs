@@ -1,6 +1,6 @@
 namespace workout_tracker.domain
 {
-    public interface ILocomotionEvent
+    public interface ICardio
     {
         Distance Distance { get; }
         Speed Speed { get; }

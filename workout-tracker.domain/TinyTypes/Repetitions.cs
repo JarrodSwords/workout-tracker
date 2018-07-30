@@ -1,9 +1,18 @@
+using System;
+
 namespace workout_tracker.domain
 {
-    public class Repetitions : TinyType<int>
+    public class Repetitions : TinyType<decimal>
     {
-        public Repetitions(int value) : base(value)
+        public Repetitions(decimal value) : base(value)
         {
+            Validate(value);
+        }
+
+        private void Validate(decimal reps)
+        {
+            if (reps < 0)
+                throw new ArgumentOutOfRangeException();
         }
     }
 }
