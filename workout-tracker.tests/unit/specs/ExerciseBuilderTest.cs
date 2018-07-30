@@ -23,7 +23,18 @@ namespace workout_tracker.tests.unit
         public void CreateDistanceRun_WithValidArgs_BuildsDistanceRunExercise()
         {
             var director = new ExerciseDirector();
-            var builder = new CardioExerciseBuilder(ExerciseType.Cardio, "distance run", new Repetitions(1), new Sets(1), new Distance(15), new Speed(5));
+            var builder = new CardioExerciseBuilder(ExerciseType.CardioFree, "distance run", new Repetitions(1), new Sets(1), new Distance(15), new Speed(5));
+
+            director.Construct(builder);
+
+            builder.Exercise.Should().NotBeNull();
+        }
+
+        [Fact]
+        public void CreateIntervalRun_WithValidArgs_BuildsIntervalRunExercise()
+        {
+            var director = new ExerciseDirector();
+            var builder = new CardioExerciseBuilder(ExerciseType.CardioTimed, "fast interval", new Repetitions(1), new Sets(10), new Speed(10), new Time(60));
 
             director.Construct(builder);
 

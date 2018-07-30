@@ -2,7 +2,7 @@ namespace workout_tracker.domain
 {
     public class Exercise : Entity
     {
-        private readonly ExerciseType _exerciseType;
+        public ExerciseType ExerciseType { get; set; }
 
         public ICardioExercise CardioExercise { get; set; }
         public IResistanceExercise ResistanceExercise { get; set; }
@@ -13,7 +13,7 @@ namespace workout_tracker.domain
 
         public Exercise(ExerciseType exerciseType, string name)
         {
-            _exerciseType = exerciseType;
+            ExerciseType = exerciseType;
             Name = name;
         }
     }
