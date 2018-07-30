@@ -6,6 +6,8 @@ namespace workout_tracker.domain
     {
         private readonly ILocomotionEvent _locomotionEvent;
 
+        public string Name { get; set; }
+
         public Distance Distance { get => _locomotionEvent.Distance; }
         public Speed Speed { get => _locomotionEvent.Speed; }
         public Time Time { get => _locomotionEvent.Time; }
