@@ -7,13 +7,10 @@ namespace workout_tracker.domain
         public Repetitions Repetitions { get; set; }
         public Sets Sets { get; set; }
 
-        public ICardioExercise CardioExercise { get; set; }
-        public IResistanceExercise ResistanceExercise { get; set; }
-
-        public Exercise(ExerciseType exerciseType, string name)
+        protected Exercise(Repetitions repetitions = null, Sets sets = null)
         {
-            ExerciseType = exerciseType;
-            Name = name;
+            Repetitions = repetitions ?? new Repetitions(1);
+            Sets = sets ?? new Sets(1);
         }
     }
 }

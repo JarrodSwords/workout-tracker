@@ -1,6 +1,6 @@
 namespace workout_tracker.domain
 {
-    public class ResistanceExercise : IResistanceExercise
+    public class ResistanceExercise : Exercise
     {
         public bool IsToFailure { get; }
         public Resistance Resistance { get; }
