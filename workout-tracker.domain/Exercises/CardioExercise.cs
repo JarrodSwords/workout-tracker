@@ -3,11 +3,13 @@ using workout_tracker.domain;
 
 namespace workout_tracker.domain
 {
-    public class CardioExercise : Exercise, ICalorieCalculator
+    public class CardioExercise : Exercise, ICaloric
     {
         public Distance Distance { get; }
         public Speed Speed { get; }
         public Time Time { get; }
+
+        decimal ICaloric.Calories => throw new NotImplementedException();
 
         private CardioExercise(Distance distance, Speed speed, Time time, Repetitions repetitions = null, Sets sets = null)
         : base(repetitions, sets)
@@ -15,8 +17,6 @@ namespace workout_tracker.domain
             this.Distance = distance;
             this.Speed = speed;
             this.Time = time;
-            this.Repetitions = repetitions;
-            this.Sets = sets;
         }
 
         public static Distance CalculateDistance(Speed speed, Time time)
@@ -37,10 +37,15 @@ namespace workout_tracker.domain
         public decimal CalculateCalories(decimal weight)
         {
             var calorieCalculator = Speed.MetersPerSecond > 2.2m
-            ? (ICalorieCalculator)new RunningCalorieCalculator()
-            : (ICalorieCalculator)new WalkingCalorieCalculator();
+            ? (ICaloric)new RunningCalorieCalculator()
+            : (ICaloric)new WalkingCalorieCalculator();
 
             return calorieCalculator.CalculateCalories(weight);
+        }
+
+        decimal ICaloric.CalculateCalories(decimal weight)
+        {
+            throw new NotImplementedException();
         }
 
         public sealed class CardioExerciseBuilder

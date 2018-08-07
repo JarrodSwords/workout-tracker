@@ -4,52 +4,13 @@ using System.Linq;
 
 namespace workout_tracker.domain
 {
-    /// <summary>
-    /// For entity compositing
-    /// </summary>
-    /// <typeparam name="T">Node type</typeparam>
-    public class TreeNode<T> where T : Entity
-    {
-        private List<TreeNode<T>> _children = new List<TreeNode<T>>();
-
-        public List<TreeNode<T>> Children { get { return _children; } }
-        public T Content { get; set; }
-
-        public TreeNode()
-        {
-        }
-
-        public TreeNode(T content)
-        {
-            Content = content;
-        }
-
-        public TreeNode<T> Add(T content)
-        {
-            _children.Add(new TreeNode<T>(content));
-            return this;
-        }
-
-        public TreeNode<T> Remove(T content)
-        {
-            foreach (var child in _children)
-            {
-                if (child.Content == content)
-                {
-                    _children.Remove(child);
-                    return this;
-                }
-            }
-
-            return this;
-        }
-    }
-
-    public class CompositeExercise : Exercise, ICalorieCalculator
+    public class CompositeExercise : Exercise, ICaloric
     {
         private ICollection<Exercise> _exercises = new List<Exercise>();
 
         public ICollection<Exercise> Exercises { get => _exercises; }
+
+        public decimal Calories => throw new NotImplementedException();
 
         public CompositeExercise Add(Exercise exercise)
         {
@@ -61,7 +22,7 @@ namespace workout_tracker.domain
         {
             var calories = 0m;
 
-            foreach(var exercise in Exercises.OfType<ICalorieCalculator>())
+            foreach(var exercise in Exercises.OfType<ICaloric>())
                 calories += exercise.CalculateCalories(weight);
 
             return calories;

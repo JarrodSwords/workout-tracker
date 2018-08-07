@@ -13,13 +13,13 @@ namespace workout_tracker.tests.unit
         [Fact]
         public void CreateIntervals_WithSprintAndWalk_ReturnsIntervalExercise()
         {
-            var sprints = new CardioExerciseBuilder()
+            var sprint = new CardioExerciseBuilder()
             .WithName("sprint")
             .WithSpeed(new Speed(3.5m))
             .WithTime(new Time(60m))
             .Build();
 
-            var walks = new CardioExerciseBuilder()
+            var walk = new CardioExerciseBuilder()
             .WithName("walk")
             .WithSpeed(new Speed(1.4m))
             .WithTime(new Time(60m))
@@ -31,11 +31,11 @@ namespace workout_tracker.tests.unit
             .Build();
 
             intervals
-            .Add(sprints)
-            .Add(walks);
+            .Add(sprint)
+            .Add(walk);
 
-            intervals.Exercises.Should().Contain(sprints);
-            intervals.Exercises.Should().Contain(walks);
+            intervals.Exercises.Should().Contain(sprint);
+            intervals.Exercises.Should().Contain(walk);
 
             intervals.CalculateCalories(74);
         }

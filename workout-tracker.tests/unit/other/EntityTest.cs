@@ -14,12 +14,17 @@ namespace workout_tracker.tests.unit
             return mock.Object;
         }
 
+        /// <summary>
+        /// Testing helper.  Uses reflection to bypass Entity.Id private setter.
+        /// </summary>
+        /// <param name="entity"></param>
+        /// <param name="id"></param>
         private void SetId(ref Entity entity, long id)
         {
             (entity.GetType()).GetProperty("Id").SetValue(entity, id);
         }
 
-        public class Subclass : Entity {}
+        public class Subclass : Entity { }
 
         [Fact]
         public void EqualToOperator_WithBothNull_ReturnsTrue()
