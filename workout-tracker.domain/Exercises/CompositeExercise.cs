@@ -4,13 +4,16 @@ using System.Linq;
 
 namespace workout_tracker.domain
 {
-    public class CompositeExercise : Exercise, ICaloric
+    public class CompositeExercise : Exercise
     {
         private ICollection<Exercise> _exercises = new List<Exercise>();
 
         public ICollection<Exercise> Exercises { get => _exercises; }
 
-        public decimal Calories => throw new NotImplementedException();
+        public CompositeExercise(string name, Repetitions repetitions = null, Sets sets = null)
+        : base(name, "Composite Exercise", repetitions, sets)
+        {
+        }
 
         public CompositeExercise Add(Exercise exercise)
         {
@@ -18,15 +21,15 @@ namespace workout_tracker.domain
             return this;
         }
 
-        public decimal CalculateCalories(decimal weight)
-        {
-            var calories = 0m;
+        // public decimal CalculateCalories(decimal weight)
+        // {
+        //     var calories = 0m;
 
-            foreach(var exercise in Exercises.OfType<ICaloric>())
-                calories += exercise.CalculateCalories(weight);
+        //     foreach(var exercise in Exercises.OfType<ICaloric>())
+        //         calories += exercise.CalculateCalories(weight);
 
-            return calories;
-        }
+        //     return calories;
+        // }
 
         public sealed class CompositeExerciseBuilder
         {
@@ -54,7 +57,7 @@ namespace workout_tracker.domain
 
             public CompositeExercise Build()
             {
-                return new CompositeExercise();
+                return new CompositeExercise(_name, _repetitions, _sets);
             }
         }
     }

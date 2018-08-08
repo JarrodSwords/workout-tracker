@@ -1,6 +1,8 @@
 using System;
 using FluentAssertions;
 using Moq;
+using UnitsNet;
+using UnitsNet.Units;
 using Xunit;
 using workout_tracker.domain;
 using CardioExerciseBuilder = workout_tracker.domain.CardioExercise.CardioExerciseBuilder;
@@ -15,14 +17,14 @@ namespace workout_tracker.tests.unit
         {
             var sprint = new CardioExerciseBuilder()
             .WithName("sprint")
-            .WithSpeed(new Speed(3.5m))
-            .WithTime(new Time(60m))
+            .WithDuration(new Duration(1, DurationUnit.Minute))
+            .WithSpeed(new Speed(8, SpeedUnit.MilePerHour))
             .Build();
 
             var walk = new CardioExerciseBuilder()
             .WithName("walk")
-            .WithSpeed(new Speed(1.4m))
-            .WithTime(new Time(60m))
+            .WithDuration(new Duration(1, DurationUnit.Minute))
+            .WithSpeed(new Speed(3, SpeedUnit.MilePerHour))
             .Build();
 
             var intervals = new CompositeExerciseBuilder()
@@ -36,8 +38,6 @@ namespace workout_tracker.tests.unit
 
             intervals.Exercises.Should().Contain(sprint);
             intervals.Exercises.Should().Contain(walk);
-
-            intervals.CalculateCalories(74);
         }
     }
 }

@@ -5,4 +5,8 @@
     <RootNamespace>workout_tracker.domain</RootNamespace>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="UnitsNet" Version="3.104.0" />
+  </ItemGroup>
+
 </Project>

@@ -1,6 +1,8 @@
 using System;
 using FluentAssertions;
 using Moq;
+using UnitsNet;
+using UnitsNet.Units;
 using Xunit;
 using workout_tracker.domain;
 using CardioExerciseBuilder = workout_tracker.domain.CardioExercise.CardioExerciseBuilder;
@@ -9,59 +11,35 @@ namespace workout_tracker.tests.unit
 {
     public class CardioExerciseBuilderTest
     {
-        [Theory]
-        [InlineData(60, 1, 61)]
-        public void Build_WithConflictingArgs_ThrowsException(decimal meters, decimal metersPerSecond, decimal seconds)
+        private Tuple<Duration, Length, Speed> CreateMeasurements(
+            double durationQuantity, string durationUnitName,
+            double lengthQuantity, string lengthUnitName,
+            double speedQuantity, string speedUnitName)
         {
-            Action build = () =>
-            {
-                var exercise = new CardioExerciseBuilder()
-            .WithName("run")
-            .WithDistance(new Distance(meters))
-            .WithSpeed(new Speed(metersPerSecond))
-            .WithTime(new Time(seconds))
-            .Build();
-            };
-            
-            build.Should().Throw<Exception>();
+            return new Tuple<Duration, Length, Speed>(
+                new Duration(durationQuantity, durationUnitName.ToEnum<DurationUnit>()),
+                new Length(lengthQuantity, lengthUnitName.ToEnum<LengthUnit>()),
+                new Speed(speedQuantity, speedUnitName.ToEnum<SpeedUnit>())
+                );
         }
 
         [Theory]
-        [InlineData(60, 1, 60)]
-        public void Build_WithTooFewArgs_ThrowsException(decimal meters, decimal metersPerSecond, decimal seconds)
+        [InlineData(2, "Minute", 528, "Foot", 6, "MilePerHour")]
+        [InlineData(1, "Minute", 529, "Foot", 6, "MilePerHour")]
+        [InlineData(1, "Minute", 528, "Foot", 7, "MilePerHour")]
+        public void Build_WithConflictingMeasurements_ThrowsException(
+            double durationQuantity, string durationUnitName,
+            double lengthQuantity, string lengthUnitName,
+            double speedQuantity, string speedUnitName)
         {
+            var measurements = CreateMeasurements(durationQuantity, durationUnitName, lengthQuantity, lengthUnitName, speedQuantity, speedUnitName);
+
             Action build = () =>
             {
                 var exercise = new CardioExerciseBuilder()
-            .Build();
-            };
-            
-            build.Should().Throw<Exception>();
-
-            build = () =>
-            {
-                var exercise = new CardioExerciseBuilder()
-            .WithDistance(new Distance(meters))
-            .Build();
-            };
-
-            build.Should().Throw<Exception>();
-
-            build = () =>
-            {
-                var exercise = new CardioExerciseBuilder()
-            .WithName("run")
-            .WithSpeed(new Speed(metersPerSecond))
-            .Build();
-            };
-
-            build.Should().Throw<Exception>();
-
-            build = () =>
-            {
-                var exercise = new CardioExerciseBuilder()
-            .WithName("run")
-            .WithTime(new Time(seconds))
+            .WithDuration(measurements.Item1)
+            .WithLength(measurements.Item2)
+            .WithSpeed(measurements.Item3)
             .Build();
             };
 
@@ -69,34 +47,90 @@ namespace workout_tracker.tests.unit
         }
 
         [Theory]
-        [InlineData(60, 1, 60)]
-        public void Build_WithValidArgs_ReturnsNewCardioExercise(decimal meters, decimal metersPerSecond, decimal seconds)
+        [InlineData(1, "Minute", 528, "Foot", 6, "MilePerHour")]
+        [InlineData(1, "Minute", 300, "Meter", 5, "MeterPerSecond")]
+        public void Build_WithInsufficientMeasurements_ThrowsException(
+            double durationQuantity, string durationUnitName,
+            double lengthQuantity, string lengthUnitName,
+            double speedQuantity, string speedUnitName)
         {
-            var run = new CardioExerciseBuilder()
-            .WithName("run")
-            .WithDistance(new Distance(meters))
-            .WithSpeed(new Speed(metersPerSecond))
+            var measurements = CreateMeasurements(durationQuantity, durationUnitName, lengthQuantity, lengthUnitName, speedQuantity, speedUnitName);
+
+            Action build = () =>
+            {
+                var exercise = new CardioExerciseBuilder()
+            .Build();
+            };
+
+            build.Should().Throw<Exception>();
+
+            build = () =>
+            {
+                var exercise = new CardioExerciseBuilder()
+            .WithDuration(measurements.Item1)
+            .Build();
+            };
+
+            build.Should().Throw<Exception>();
+
+            build = () =>
+            {
+                var exercise = new CardioExerciseBuilder()
+            .WithLength(measurements.Item2)
+            .Build();
+            };
+
+            build.Should().Throw<Exception>();
+
+            build = () =>
+            {
+                var exercise = new CardioExerciseBuilder()
+            .WithSpeed(measurements.Item3)
+            .Build();
+            };
+
+            build.Should().Throw<Exception>();
+        }
+
+        [Theory]
+        [InlineData(1, "Minute", 528, "Foot", 6, "MilePerHour")]
+        [InlineData(1, "Minute", 300, "Meter", 5, "MeterPerSecond")]
+        public void Build_WithValidMeasurements_ReturnsCardioExercise(
+            double durationQuantity, string durationUnitName,
+            double lengthQuantity, string lengthUnitName,
+            double speedQuantity, string speedUnitName)
+        {
+            var measurements = CreateMeasurements(durationQuantity, durationUnitName, lengthQuantity, lengthUnitName, speedQuantity, speedUnitName);
+            
+            var exercise = new CardioExerciseBuilder()
+            .WithDuration(measurements.Item1)
+            .WithLength(measurements.Item2)
             .Build();
 
-            run.Should().NotBeNull();
-            run = null;
+            exercise.Should().NotBeNull();
 
-            run = new CardioExerciseBuilder()
-            .WithName("run")
-            .WithDistance(new Distance(meters))
-            .WithTime(new Time(seconds))
+            exercise = null;
+            exercise = new CardioExerciseBuilder()
+            .WithDuration(measurements.Item1)
+            .WithSpeed(measurements.Item3)
             .Build();
 
-            run.Should().NotBeNull();
-            run = null;
+            exercise.Should().NotBeNull();
 
-            run = new CardioExerciseBuilder()
-            .WithName("run")
-            .WithSpeed(new Speed(metersPerSecond))
-            .WithTime(new Time(seconds))
+            exercise = null;
+            exercise = new CardioExerciseBuilder()
+            .WithLength(measurements.Item2)
+            .WithSpeed(measurements.Item3)
             .Build();
 
-            run.Should().NotBeNull();
+            exercise = null;
+            exercise = new CardioExerciseBuilder()
+            .WithDuration(measurements.Item1)
+            .WithLength(measurements.Item2)
+            .WithSpeed(measurements.Item3)
+            .Build();
+
+            exercise.Should().NotBeNull();
         }
     }
 }

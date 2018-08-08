@@ -1,65 +1,68 @@
 using System;
+using UnitsNet;
 using workout_tracker.domain;
 
 namespace workout_tracker.domain
 {
-    public class CardioExercise : Exercise, ICaloric
+    public class CardioExercise : Exercise
     {
-        public Distance Distance { get; }
+        public Duration Duration { get; }
+        public Length Length { get; }
         public Speed Speed { get; }
-        public Time Time { get; }
 
-        decimal ICaloric.Calories => throw new NotImplementedException();
-
-        private CardioExercise(Distance distance, Speed speed, Time time, Repetitions repetitions = null, Sets sets = null)
-        : base(repetitions, sets)
+        private CardioExercise(Duration duration, Length length, Speed speed, string name = null, Repetitions repetitions = null, Sets sets = null)
+        : base(name, "Cardio Exercise", repetitions, sets)
         {
-            this.Distance = distance;
-            this.Speed = speed;
-            this.Time = time;
+            Duration = duration;
+            Length = length;
+            Speed = speed;
         }
 
-        public static Distance CalculateDistance(Speed speed, Time time)
+        public static Duration CalculateDuration(Length length, Speed speed)
         {
-            return new Distance(speed.MetersPerSecond * time.Seconds);
+            return length / speed;
         }
 
-        public static Speed CalculateSpeed(Distance distance, Time time)
+        public static Length CalculateLength(Duration duration, Speed speed)
         {
-            return new Speed(distance.Meters / time.Seconds);
+            return speed * duration;
         }
 
-        public static Time CalculateTime(Distance distance, Speed speed)
+        public static Speed CalculateSpeed(Duration duration, Length length)
         {
-            return new Time(distance.Meters / speed.MetersPerSecond);
-        }
-
-        public decimal CalculateCalories(decimal weight)
-        {
-            var calorieCalculator = Speed.MetersPerSecond > 2.2m
-            ? (ICaloric)new RunningCalorieCalculator()
-            : (ICaloric)new WalkingCalorieCalculator();
-
-            return calorieCalculator.CalculateCalories(weight);
-        }
-
-        decimal ICaloric.CalculateCalories(decimal weight)
-        {
-            throw new NotImplementedException();
+            return length / duration;
         }
 
         public sealed class CardioExerciseBuilder
         {
-            private Distance _distance;
-            private Speed _speed;
-            private Time _time;
             private string _name;
+            private Duration? _duration;
+            private Length? _length;
+            private Speed? _speed;
             private Repetitions _repetitions;
             private Sets _sets;
 
             public CardioExerciseBuilder WithName(string name)
             {
                 _name = name;
+                return this;
+            }
+
+            public CardioExerciseBuilder WithDuration(Duration duration)
+            {
+                _duration = duration;
+                return this;
+            }
+
+            public CardioExerciseBuilder WithLength(Length length)
+            {
+                _length = length;
+                return this;
+            }
+
+            public CardioExerciseBuilder WithSpeed(Speed speed)
+            {
+                _speed = speed;
                 return this;
             }
 
@@ -75,45 +78,49 @@ namespace workout_tracker.domain
                 return this;
             }
 
-            public CardioExerciseBuilder WithDistance(Distance distance)
+            private bool CompleteMeasurements()
             {
-                _distance = distance;
-                return this;
+                const bool IS_COMPLETE = true;
+
+                if (_duration.HasValue && _length.HasValue && _speed.HasValue)
+                {
+                    return IS_COMPLETE;
+                }
+                else if (_length.HasValue && _speed.HasValue)
+                {
+                    _duration = CardioExercise.CalculateDuration(_length.Value, _speed.Value);
+                    return IS_COMPLETE;
+                }
+                else if (_duration.HasValue && _speed.HasValue)
+                {
+                    _length = CardioExercise.CalculateLength(_duration.Value, _speed.Value);
+                    return IS_COMPLETE;
+                }
+                else if (_duration.HasValue && _length.HasValue)
+                {
+                    _speed = CardioExercise.CalculateSpeed(_duration.Value, _length.Value);
+                    return IS_COMPLETE;
+                }
+
+                return !IS_COMPLETE;
             }
 
-            public CardioExerciseBuilder WithSpeed(Speed speed)
+            private static bool ValidateMeasurements(Duration duration, Length length, Speed speed)
             {
-                _speed = speed;
-                return this;
-            }
-
-            public CardioExerciseBuilder WithTime(Time time)
-            {
-                _time = time;
-                return this;
-            }
-
-            private void Complete()
-            {
-                if (_distance == null)
-                    _distance = CardioExercise.CalculateDistance(_speed, _time);
-                else if (_speed == null)
-                    _speed = CardioExercise.CalculateSpeed(_distance, _time);
-                else if (_time == null)
-                    _time = CardioExercise.CalculateTime(_distance, _speed);
-            }
-
-            private static void Validate(Distance distance, Speed speed, Time time)
-            {
-                if (distance.Meters != CalculateDistance(speed, time).Meters)
-                    throw new ArgumentOutOfRangeException();
+                return length.Equals(CalculateLength(duration, speed));
             }
 
             public CardioExercise Build()
             {
-                Complete();
-                Validate(_distance, _speed, _time);
-                return new CardioExercise(_distance, _speed, _time, _repetitions, _sets);
+                var isComplete = CompleteMeasurements();
+                if (!isComplete)
+                    throw new Exception("Cardio exercises must be built with at least two of duration, length, and speed.");
+
+                var isValid = ValidateMeasurements(_duration.Value, _length.Value, _speed.Value);
+                if (!isValid)
+                    throw new Exception("Cardio exercise has a measurement contradiction.");
+
+                return new CardioExercise(_duration.Value, _length.Value, _speed.Value, _name, _repetitions, _sets);
             }
         }
     }

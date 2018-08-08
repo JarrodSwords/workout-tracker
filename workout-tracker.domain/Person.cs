@@ -9,7 +9,7 @@ namespace workout_tracker.domain
         public string Surname { get; set; }
         public DateTime Birthdate { get; set; }
         public int Age { get; }
-        public ICollection<MorningWeight> Weights { get; set; }
+        public ICollection<MorningMass> Weights { get; set; }
         public ICollection<Workout> CoachingSessions { get; set; }
         public ICollection<ITrainee> Trainees { get; set; }
         public ICollection<ITrainer> Trainers { get; set; }
